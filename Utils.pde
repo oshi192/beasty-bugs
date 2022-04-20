@@ -17,6 +17,7 @@ public class Utils{
       citiP.setInt("whatToDoLength", population.citizens.get(i).whatToDoLength);
       citiP.setInt("howToEatLength", population.citizens.get(i).howToEatLength);
       citiP.setInt("genomePointer", population.citizens.get(i).genomePointer);
+      citiP.setInt("cAmount", population.citizens.get(i).cininAmount);
       String result = "[";
       for(int j =0;j<population.citizens.get(i).genome.length;j++){
         result+=population.citizens.get(i).genome[j]+ (j==population.citizens.get(i).genome.length-1?"]":", ");

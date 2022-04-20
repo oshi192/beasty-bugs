@@ -49,7 +49,7 @@ class Population{
   public void repopulate(){
       Collections.sort(citizens, (cell1, cell2)->cell2.health.compareTo(cell1.health));
                                       println("============== top 10 ===================");
-                                      for(int i = 0; i<10; i++){
+                                      for(int i = 0; i<15; i++){
                                         println("["+i+"]\t"+citizens.get(i));
                                       }
                                       println("==============              ===================");
@@ -97,7 +97,7 @@ class Population{
            amount++;
          }
       }
-      chield.statData.setAvgSpeed(sum/amount);
+      if(amount>0)chield.statData.setAvgSpeed(sum/amount);
       //println("p1\t"+parrent1.toString());
       //println("p2\t"+parrent2.toString());
       //println("ch\t"+chield.toString());

@@ -14,7 +14,7 @@ int maxDays=500;
 public void settings(){
   size(cellAmountX * cellSize+statSize, cellAmountY * cellSize);
   setField();
-  currentPopulation = new Population(150, cellAmountX, cellAmountY, cellSize);
+  currentPopulation = new Population(250, cellAmountX, cellAmountY, cellSize);
 }
 
 public void draw(){
@@ -31,7 +31,8 @@ public void draw(){
   }
   displayInfo(currentStep++);
   currentPopulation.display();
-  addItemsToField(items, 3, random(100)<30? ItemType.POISON: ItemType.FOOD); 
+  addItemsToField(items, 3, random(100)<30? ItemType.POISON: ItemType.FOOD, 10); 
+  addItemsToField(items, 1, ItemType.CININ, 2); 
 }
 
 public void drawField(){
@@ -63,21 +64,22 @@ public void setField(){
   
   }
   //add food
-  addItemsToField(items, 100, ItemType.FOOD); 
+  addItemsToField(items, 100, ItemType.FOOD, 10); 
+  addItemsToField(items, 100, ItemType.CININ, 2); 
   //add poison
-  addItemsToField(items, 100, ItemType.POISON); 
+  addItemsToField(items, 100, ItemType.POISON, 10); 
 }
 
 
-public void addItemsToField(FieldItem[][] field, int amount, ItemType type){
+public void addItemsToField(FieldItem[][] field, int amount, ItemType type, int size){
   for(int i = 0; i<amount; i++){
-    int x = (int)random(cellAmountX-50)+25;
-    int y = (int)random(cellAmountY-50)+25;
+    int x = (int)random(cellAmountX-size)+size/2;
+    int y = (int)random(cellAmountY-size)+size/2;
     int tryes=0;
     while(field[x][y].type != ItemType.EMPTY && tryes<20){
       tryes++;
-      x = (int)random(cellAmountX-50)+25;
-      y = (int)random(cellAmountY-50)+25;
+      x = (int)random(cellAmountX-size)+size/2;
+      y = (int)random(cellAmountY-size)+size/2;
     }
     if(field[x][y].type == ItemType.EMPTY){
         field[x][y] = new FieldItem(x*cellSize, y*cellSize, cellSize, type);

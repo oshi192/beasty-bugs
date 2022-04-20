@@ -14,14 +14,18 @@ int [][] coordinateMap = {
 class Cell{
   //statistics data
   Statistics statData = new Statistics();
+  //
+  byte genomePointer = 0;
   int avgSpeed = 0;
   int wasChecked = -2;
+  byte whatToDoLength=64;
+  byte howToEatLength=4;//food poison border c
+  //base characteristics
   int x,y,direction, bodySize;
   Integer health;
-  byte whatToDoLength=64;
-  byte howToEatLength=3;//food poison border
+  int cininAmount = 0;
+
   byte[]genome = new byte[whatToDoLength+howToEatLength];
-  byte genomePointer = 0;
 
   /*
     0X - go or not to go
@@ -52,6 +56,7 @@ class Cell{
     this.health = health;
     this.direction = direction;
   }
+  
   public FieldItem [][] calculateNearest(){
     int [] xy = coordinateMap[direction];
       FieldItem [][] newItems = new FieldItem [3][3];
@@ -62,6 +67,7 @@ class Cell{
       }
       return newItems;
   }
+  
   public void step2(){
      health--;
      if(health<0)return;
@@ -90,7 +96,7 @@ class Cell{
         break;
       }
       case 3 : {
-        wasChecked=genomePointer;
+        wasChecked=genomePointer;//todo remove this
          health--;
         break;
       }
@@ -146,7 +152,11 @@ class Cell{
        case  POISON : {
          if(genome[whatToDoLength+1]>31){
            statData.incEatedPoison();
-           health-=50;
+           if(cininAmount>0){
+             health+=80;
+           }else{
+             health-=50;
+           }
            item.type = ItemType.EMPTY;
          }
          break;
@@ -158,6 +168,15 @@ class Cell{
          }
          break;
        }
+       case  CININ : {
+         if(genome[whatToDoLength+3]/8>3){
+           if(cininAmount<genome[whatToDoLength+3]%8){
+             cininAmount++;
+             item.type = ItemType.EMPTY;
+           }
+         }
+         break;
+       }
     }
   }
     
@@ -165,7 +184,7 @@ class Cell{
 
     if(health>0){
       int size = bodySize/3 + health/30;
-      fill(0,100,250);
+      fill(40*cininAmount,100,250);
       ellipse(x* bodySize + bodySize/2,y*bodySize+bodySize/2, size-1, size-1);
           stroke(255);
       line( x* bodySize + bodySize/2,
@@ -188,9 +207,9 @@ class Cell{
   @Override
   public String toString(){
     String result = "";
-    for(int i =0;i<genome.length;i++){
-      result+=genome[i]+(genome[i]<10?"  ":" ");
-    }
+    //for(int i =0;i<genome.length;i++){
+    //  result+=genome[i]+(genome[i]<10?"  ":" ");
+    //}
     return "health+\t"+health+", statData: "+statData+"\nactions: ["+result+"]";
   }
 }
